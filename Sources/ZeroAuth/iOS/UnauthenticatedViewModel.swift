@@ -63,8 +63,10 @@ public class UnauthenticatedViewModel: ObservableObject {
                             
                             let additionalParams = authorizationResponse?.additionalParameters
                             
-                            let response = ZKLoginResponse(tokenInfo: TokenInfo(accessToken: authorizationResponse?.accessToken, expiresIn: 5, refreshToken: tokenResponse.refreshToken, scope: authorizationResponse?.scope, tokenType: authorizationResponse?.tokenType, idToken: tokenResponse.idToken,
-                                                                                nonce: additionalParams?["nonce"] as? String),
+                           let tokenInfo = TokenInfo(accessToken: authorizationResponse?.accessToken, expiresIn: 5, refreshToken: tokenResponse.refreshToken, scope: authorizationResponse?.scope, tokenType: authorizationResponse?.tokenType, idToken: tokenResponse.idToken,
+                                                                                nonce: additionalParams?["nonce"] as? String)
+                            
+                            let response = ZKLoginResponse(address: generateAddress(zkLoginRequest: updatedZKLoginRequest, tokenInfo: tokenInfo), tokenInfo: tokenInfo,
                                                            saltingService: updatedZKLoginRequest.saltingService)
                             
                             
@@ -93,4 +95,36 @@ public class UnauthenticatedViewModel: ObservableObject {
             return UIApplication.shared.windows.first!.rootViewController!
         }
     }
+    
+    func generateAddress(zkLoginRequest: ZKLoginRequest, tokenInfo: TokenInfo?) -> String {
+       
+        let reqProvider = zkLoginRequest.openIDServiceConfiguration.provider
+        let provider: OidcProvider = determineProvider(reqProvider)
+        
+        if (tokenInfo?.idToken == nil) {
+            return ""
+        }
+        
+        if zkLoginRequest.saltingService.salt.isEmpty {
+            return ""
+        }
+        
+        return try! generateZkLoginAddress(provider: provider, jwt: (tokenInfo?.idToken)!, salt: zkLoginRequest.saltingService.salt)
+    }
+
+    private func determineProvider(_ reqProvider: Any) -> OidcProvider {
+        if reqProvider is Google {
+            return .google
+        } else if reqProvider is Apple {
+            return .apple
+        } else if reqProvider is Facebook {
+            return .facebook
+        } else if reqProvider is Slack {
+            return .slack
+        } else {
+            return .twitch
+        }
+    }
+
+    
 }
