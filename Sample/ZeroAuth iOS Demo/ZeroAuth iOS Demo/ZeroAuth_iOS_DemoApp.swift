@@ -1,17 +1,21 @@
-//
-//  ZeroAuth_iOS_DemoApp.swift
-//  ZeroAuth iOS Demo
-//
-//  Created by Mashate  Aaron  on 07/03/2024.
-//
-
 import SwiftUI
+import ZeroAuth
 
 @main
 struct ZeroAuth_iOS_DemoApp: App {
+    @ObservedObject private var model: ZKLoginModel
+    
+    init() {
+        self.model = ZKLoginModel()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if model.response != nil {
+                WalletView(viewModel: WalletViewModel(response: model.response!))
+            } else {
+                LoginView(model: model.getUnauthenticatedViewModel())
+            }
         }
     }
 }

@@ -14,6 +14,10 @@
 		7C2230BE2B9944E000CEAB7A /* ZeroAuth_iOS_DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230BD2B9944E000CEAB7A /* ZeroAuth_iOS_DemoTests.swift */; };
 		7C2230C82B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230C72B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITests.swift */; };
 		7C2230CA2B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230C92B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITestsLaunchTests.swift */; };
+		7C2230D82B99464E00CEAB7A /* ZeroAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7C2230D72B99464E00CEAB7A /* ZeroAuth */; };
+		7C2230DA2B99464E00CEAB7A /* ZeroAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7C2230D92B99464E00CEAB7A /* ZeroAuthCore */; };
+		7C2230DC2B994CB100CEAB7A /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230DB2B994CB100CEAB7A /* WalletView.swift */; };
+		7C2230DE2B994DAA00CEAB7A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230DD2B994DAA00CEAB7A /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,8 @@
 		7C2230C32B9944E000CEAB7A /* ZeroAuth iOS DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ZeroAuth iOS DemoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C2230C72B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroAuth_iOS_DemoUITests.swift; sourceTree = "<group>"; };
 		7C2230C92B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroAuth_iOS_DemoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7C2230DB2B994CB100CEAB7A /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
+		7C2230DD2B994DAA00CEAB7A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C2230D82B99464E00CEAB7A /* ZeroAuth in Frameworks */,
+				7C2230DA2B99464E00CEAB7A /* ZeroAuthCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +102,8 @@
 		7C2230AB2B9944DF00CEAB7A /* ZeroAuth iOS Demo */ = {
 			isa = PBXGroup;
 			children = (
+				7C2230DD2B994DAA00CEAB7A /* LoginView.swift */,
+				7C2230DB2B994CB100CEAB7A /* WalletView.swift */,
 				7C2230AC2B9944DF00CEAB7A /* ZeroAuth_iOS_DemoApp.swift */,
 				7C2230AE2B9944DF00CEAB7A /* ContentView.swift */,
 				7C2230B02B9944E000CEAB7A /* Assets.xcassets */,
@@ -143,6 +153,10 @@
 			dependencies = (
 			);
 			name = "ZeroAuth iOS Demo";
+			packageProductDependencies = (
+				7C2230D72B99464E00CEAB7A /* ZeroAuth */,
+				7C2230D92B99464E00CEAB7A /* ZeroAuthCore */,
+			);
 			productName = "ZeroAuth iOS Demo";
 			productReference = 7C2230A92B9944DF00CEAB7A /* ZeroAuth iOS Demo.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +229,9 @@
 				Base,
 			);
 			mainGroup = 7C2230A02B9944DF00CEAB7A;
+			packageReferences = (
+				7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */,
+			);
 			productRefGroup = 7C2230AA2B9944DF00CEAB7A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -259,6 +276,8 @@
 			files = (
 				7C2230AF2B9944DF00CEAB7A /* ContentView.swift in Sources */,
 				7C2230AD2B9944DF00CEAB7A /* ZeroAuth_iOS_DemoApp.swift in Sources */,
+				7C2230DE2B994DAA00CEAB7A /* LoginView.swift in Sources */,
+				7C2230DC2B994CB100CEAB7A /* WalletView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +607,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mcxross/swift-zeroauth.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7C2230D72B99464E00CEAB7A /* ZeroAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */;
+			productName = ZeroAuth;
+		};
+		7C2230D92B99464E00CEAB7A /* ZeroAuthCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */;
+			productName = ZeroAuthCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7C2230A12B9944DF00CEAB7A /* Project object */;
 }
