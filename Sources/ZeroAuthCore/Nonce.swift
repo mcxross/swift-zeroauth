@@ -15,16 +15,19 @@ public struct Nonce {
     
     // Computed property to generate a string representation of the Nonce
     public var value: String? {
-        if pubKey.isEmpty {
-            do {
+        do {
+            let keyToUse: String
+            if pubKey.isEmpty {
                 let derivedKey = try deriveNewKey().address
-                return generateNonce(pk: derivedKey, maxEpoch: self.maxEpoch, randomness: self.randomness)
-            } catch {
-                return nil
+                keyToUse = derivedKey
+            } else {
+                keyToUse = pubKey
             }
-        } else {
-            return generateNonce(pk: self.pubKey, maxEpoch: self.maxEpoch, randomness: self.randomness)
+            return try generateNonce(pk: keyToUse, maxEpoch: self.maxEpoch, randomness: self.randomness)
+        } catch {
+            return nil
         }
     }
+
 }
 

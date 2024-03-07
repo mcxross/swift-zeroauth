@@ -1,13 +1,13 @@
 //
-//  iosUITestsLaunchTests.swift
-//  iosUITests
+//  ZeroAuth_iOS_DemoUITestsLaunchTests.swift
+//  ZeroAuth iOS DemoUITests
 //
-//  Created by Mashate  Aaron  on 17/02/2024.
+//  Created by Mashate  Aaron  on 07/03/2024.
 //
 
 import XCTest
 
-final class iosUITestsLaunchTests: XCTestCase {
+final class ZeroAuth_iOS_DemoUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

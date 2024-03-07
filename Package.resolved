@@ -17,6 +17,15 @@
         "revision" : "71cde449f13d453227e687458144bde372d30fc7",
         "version" : "1.6.2"
       }
+    },
+    {
+      "identity" : "swift-suiness",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mcxross/swift-suiness.git",
+      "state" : {
+        "revision" : "cf793bc95b14f3ef1cb27932a3e38ad37b909036",
+        "version" : "0.1.2-beta"
+      }
     }
   ],
   "version" : 2

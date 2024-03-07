@@ -1,13 +1,13 @@
 //
-//  iosUITests.swift
-//  iosUITests
+//  ZeroAuth_iOS_DemoUITests.swift
+//  ZeroAuth iOS DemoUITests
 //
-//  Created by Mashate  Aaron  on 17/02/2024.
+//  Created by Mashate  Aaron  on 07/03/2024.
 //
 
 import XCTest
 
-final class iosUITests: XCTestCase {
+final class ZeroAuth_iOS_DemoUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
