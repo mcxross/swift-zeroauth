@@ -58,7 +58,9 @@ public class UnauthenticatedViewModel: ObservableObject {
                             clientID: updatedZKLoginRequest.openIDServiceConfiguration.clientId,
                             authResponse: authorizationResponse!)
                         
-                        let salt = try await updatedZKLoginRequest.saltingService.getSalt()
+                        print(tokenResponse)
+                        
+                        let salt = try await updatedZKLoginRequest.saltingService.getSalt(jwt: authorizationResponse?.accessToken ?? "")
                         
                         print(salt)
                         
