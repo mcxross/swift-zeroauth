@@ -37,7 +37,7 @@ public class UnauthenticatedViewModel: ObservableObject {
                     
                     let oidsc = OpenIDServiceConfiguration(provider: userOIDSC.provider, clientId: userOIDSC.clientId, redirectUri: userOIDSC.redirectUri, nonce: updatedNonce)
                     
-                    let updatedZKLoginRequest = ZKLoginRequest(openIDServiceConfiguration: oidsc, saltingService: zkLoginRequest.saltingService)
+                    let updatedZKLoginRequest = ZKLoginRequest(openIDServiceConfiguration: oidsc, saltingService: zkLoginRequest.saltingService, provingService: zkLoginRequest.provingService)
                     
                     // Initiate the redirect on the UI thread
                     try await MainActor.run {

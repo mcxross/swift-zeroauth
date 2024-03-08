@@ -12,7 +12,7 @@ public struct DefaultProvingService : ProvingServiceProtocol {
     
     public var proof = ""
     
-    public init(prover: String = "") {
+    public init(prover: String) {
         self.prover = prover
     }
     
@@ -42,6 +42,7 @@ public struct DefaultProvingService : ProvingServiceProtocol {
                 case .success(let data):
                     do {
                         let decoder = JSONDecoder()
+                        print(data)
                         let proofResponse = try decoder.decode(Proof.self, from: data)
                         continuation.resume(returning: proofResponse)
                     } catch {
