@@ -3,7 +3,7 @@ public struct ZKLoginRequest {
     public let saltingService: SaltingServiceProtocol
     public let provingService: ProvingServiceProtocol
     public init(openIDServiceConfiguration: OpenIDServiceConfiguration,
-                saltingService: SaltingServiceProtocol,
+                saltingService: SaltingServiceProtocol = DefaultSaltingService(),
                 provingService: ProvingServiceProtocol = DefaultProvingService()) {
         self.openIDServiceConfiguration = openIDServiceConfiguration
         self.saltingService = saltingService
