@@ -31,7 +31,13 @@ public struct DefaultProvingService : ProvingServiceProtocol {
                 "keyClaimName": "sub"
             ]
             
-            AF.request(prover, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseData { response in
+            let determinedPover = if prover.isEmpty {
+                DefaultProvingService.MYSTEN_DEVNET_PROVER_URL
+            } else {
+                prover
+            }
+            
+            AF.request(determinedPover, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseData { response in
                 switch response.result {
                 case .success(let data):
                     do {

@@ -4,7 +4,7 @@ public struct DefaultSaltingService : SaltingServiceProtocol {
     
     public init() {}
 
-    public func getSalt(jwt: String) async throws -> String {
+    public func fetchSalt(jwt: String) async throws -> String {
         return self.salt
     }
     
