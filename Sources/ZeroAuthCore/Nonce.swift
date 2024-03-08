@@ -2,13 +2,13 @@ import Suiness
 
 public struct Nonce {
     public var endPoint: String
-    public var pubKey: String
+    public var kp: Keypair
     public var maxEpoch: UInt64
     public var randomness: String
     
-    public init(endPoint: String = "https://sui-testnet.mystenlabs.com", pubKey: String = "", maxEpoch: UInt64 = 30, randomness: String = generateRandomness()) {
+    public init(endPoint: String = "https://sui-testnet.mystenlabs.com", kp: Keypair = Keypair(), maxEpoch: UInt64 = 30, randomness: String = generateRandomness()) {
         self.endPoint = endPoint
-        self.pubKey = pubKey
+        self.kp = kp
         self.maxEpoch = maxEpoch
         self.randomness = randomness
     }
@@ -16,14 +16,14 @@ public struct Nonce {
     // Computed property to generate a string representation of the Nonce
     public var value: String? {
         do {
-            let keyToUse: String
-            if pubKey.isEmpty {
-                let derivedKey = try deriveNewKey().address
-                keyToUse = derivedKey
+            let kpToUse: Keypair
+            if kp.pk.isEmpty || kp.sk.isEmpty {
+                let derivedKey = try deriveNewKey()
+                kpToUse = Keypair(sk: derivedKey.sk, pk: derivedKey.address)
             } else {
-                keyToUse = pubKey
+                kpToUse = kp
             }
-            return try generateNonce(pk: keyToUse, maxEpoch: self.maxEpoch, randomness: self.randomness)
+            return try generateNonce(pk: kpToUse.pk, maxEpoch: self.maxEpoch, randomness: self.randomness)
         } catch {
             return nil
         }

@@ -31,7 +31,7 @@ public class UnauthenticatedViewModel: ObservableObject {
                     
                     let userNonce = zkLoginRequest.openIDServiceConfiguration.nonce
                     
-                    let updatedNonce = Nonce(endPoint: userNonce.endPoint, pubKey: userNonce.pubKey,  maxEpoch: UInt64(epochId) + userNonce.maxEpoch, randomness: userNonce.randomness)
+                    let updatedNonce = Nonce(endPoint: userNonce.endPoint, kp: userNonce.kp,  maxEpoch: UInt64(epochId) + userNonce.maxEpoch, randomness: userNonce.randomness)
                     
                     let userOIDSC = zkLoginRequest.openIDServiceConfiguration
                     
@@ -58,17 +58,20 @@ public class UnauthenticatedViewModel: ObservableObject {
                             clientID: updatedZKLoginRequest.openIDServiceConfiguration.clientId,
                             authResponse: authorizationResponse!)
                         
+                        let salt = try await updatedZKLoginRequest.saltingService.getSalt()
+                        
+                        let proofResponse = try await updatedZKLoginRequest.provingService.fetchProof(jwtToken: authorizationResponse?.accessToken ?? "", extendedEphemeralPublicKey: getExtendedEphemeralPublicKey(sk: updatedNonce.kp.pk), maxEpoch: Int64(updatedNonce.maxEpoch), randomness: updatedNonce.randomness, salt: salt)
                         
                         await MainActor.run {
                             
-                            let additionalParams = authorizationResponse?.additionalParameters
+                           let additionalParams = authorizationResponse?.additionalParameters
                             
                            let tokenInfo = TokenInfo(accessToken: authorizationResponse?.accessToken, expiresIn: 5, refreshToken: tokenResponse.refreshToken, scope: authorizationResponse?.scope, tokenType: authorizationResponse?.tokenType, idToken: tokenResponse.idToken,
                                                                                 nonce: additionalParams?["nonce"] as? String)
                             
-                            let response = ZKLoginResponse(address: generateAddress(zkLoginRequest: updatedZKLoginRequest, tokenInfo: tokenInfo), tokenInfo: tokenInfo,
-                                                           saltingService: updatedZKLoginRequest.saltingService)
-                            
+                            let response = ZKLoginResponse(address: generateAddress(zkLoginRequest: updatedZKLoginRequest, tokenInfo: tokenInfo), kp: updatedZKLoginRequest.openIDServiceConfiguration.nonce.kp, tokenInfo: tokenInfo,
+                                                           salt: salt,
+                            proof: proofResponse)
                             
                             self.onLoggedIn(response)
                         }
