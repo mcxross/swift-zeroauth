@@ -60,7 +60,11 @@ public class UnauthenticatedViewModel: ObservableObject {
                         
                         let salt = try await updatedZKLoginRequest.saltingService.getSalt()
                         
+                        print(salt)
+                        
                         let proofResponse = try await updatedZKLoginRequest.provingService.fetchProof(jwtToken: authorizationResponse?.accessToken ?? "", extendedEphemeralPublicKey: getExtendedEphemeralPublicKey(sk: updatedNonce.kp.pk), maxEpoch: Int64(updatedNonce.maxEpoch), randomness: updatedNonce.randomness, salt: salt)
+                        
+                        print(proofResponse)
                         
                         await MainActor.run {
                             
