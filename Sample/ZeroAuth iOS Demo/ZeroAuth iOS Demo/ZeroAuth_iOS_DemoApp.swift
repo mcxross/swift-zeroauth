@@ -3,18 +3,18 @@ import ZeroAuth
 
 @main
 struct ZeroAuth_iOS_DemoApp: App {
-    @ObservedObject private var model: ZKLoginModel
+    @ObservedObject private var zkLModel: ZKLoginModel
     
     init() {
-        self.model = ZKLoginModel()
+        self.zkLModel = ZKLoginModel()
     }
     
     var body: some Scene {
         WindowGroup {
-            if model.response != nil {
-                WalletView(viewModel: WalletViewModel(response: model.response!))
+            if zkLModel.response != nil {
+                WalletView(viewModel: WalletViewModel(model: zkLModel))
             } else {
-                LoginView(model: model.getUnauthenticatedViewModel())
+                LoginView(viewModel: LoginViewModel(model: zkLModel))
             }
         }
     }

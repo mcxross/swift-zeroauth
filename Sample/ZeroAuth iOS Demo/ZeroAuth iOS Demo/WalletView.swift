@@ -1,6 +1,7 @@
 import SwiftUI
 import Suiness
 import ZeroAuthCore
+import ZeroAuth
 import Alamofire
 
 struct WalletView: View {
@@ -76,9 +77,14 @@ class WalletViewModel: ObservableObject {
     
     @Published var zkLoginResponse: ZKLoginResponse?
     
-    init(response: ZKLoginResponse? = nil) {
-        zkLoginResponse = response
-        generateAddress()
+    @Published var model: ZKLoginModel
+    
+    init(model: ZKLoginModel) {
+        self.model = model
+        self.zkLoginResponse = model.response
+        if zkLoginResponse != nil {
+            self.accountAddress = zkLoginResponse?.address ?? ""
+        }
         fetchAccountBalance()
     }
     
@@ -116,20 +122,7 @@ class WalletViewModel: ObservableObject {
         
     }
     
-    func generateAddress() {
-        guard let jwt = zkLoginResponse?.tokenInfo.idToken, !jwt.isEmpty,
-              let salt = zkLoginResponse?.saltinService.salt, !salt.isEmpty else {
-            self.accountAddress = "0x153d59ac4573456a15991a63755a552fc6e45ca32d4ac39663c564df0546283c"
-            return
-        }
-        
-        do {
-            accountAddress = try! generateZkLoginAddress(provider: OidcProvider.google, jwt: jwt, salt: salt)
-        } catch {
-            
-        }
-       
-    }
+    
     
     func fetchAccountBalance() {
         let urlString = "https://sui-devnet.mystenlabs.com/graphql"
@@ -170,12 +163,12 @@ class WalletViewModel: ObservableObject {
     
     
     func logOut() {
-        // Implement log out functionality
+        model.getAuthenticatedViewModel()?.startLogout()
     }
 }
 
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletView(viewModel: WalletViewModel())
+        WalletView(viewModel: WalletViewModel(model: ZKLoginModel()))
     }
 }

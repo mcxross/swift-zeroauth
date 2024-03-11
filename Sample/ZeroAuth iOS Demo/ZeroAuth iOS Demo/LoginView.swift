@@ -3,14 +3,8 @@ import ZeroAuthCore
 import ZeroAuth
 
 struct LoginView: View {
-    private var model: UnauthenticatedViewModel
-    
-    init(
-        model: UnauthenticatedViewModel
-    ) {
-        self.model = model
-    }
-    
+    @ObservedObject var viewModel: LoginViewModel
+   
     var body: some View {
         VStack {
             Text("Access Sui")
@@ -18,12 +12,7 @@ struct LoginView: View {
                 .padding(.bottom, 50)
             
             Button(action: {
-                let google = ZKLoginRequest(
-                    openIDServiceConfiguration: OpenIDServiceConfiguration(provider: Google(), clientId: "284882057281-fgsdehdsd6ivlduhsmllvlc1973nkuj3.apps.googleusercontent.com",
-                                                                           redirectUri: "com.googleusercontent.apps.284882057281-fgsdehdsd6ivlduhsmllvlc1973nkuj3:/oauth2redirect/google"),
-                    saltingService: DefaultSaltingService(salt: "129390038577185583942388216820280642146"))
-                
-                model.zkLogin(zkLoginRequest: google)
+                viewModel.loginGoogle()
             }) {
                 HStack {
                     Text("Login with Google").foregroundColor(.white)
@@ -36,7 +25,9 @@ struct LoginView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 10)
             
-            Button(action: {}) {
+            Button(action: {
+                viewModel.loginApple()
+            }) {
                 HStack {
                     Text("Login with Apple").foregroundColor(.white)
                 }
@@ -76,12 +67,36 @@ struct LoginView: View {
 }
 
 class LoginViewModel: ObservableObject {
-    @Published var success: Bool = false
+    
+    @Published var model: ZKLoginModel
+    private var unauthModel: UnauthenticatedViewModel
+    
+    init(model: ZKLoginModel) {
+        self.model = model
+        self.unauthModel = model.getUnauthenticatedViewModel()
+    }
+    
+    func loginGoogle() {
+        let req = ZKLoginRequest(
+            openIDServiceConfiguration: OpenIDServiceConfiguration(provider: Google(), clientId: "284882057281-fgsdehdsd6ivlduhsmllvlc1973nkuj3.apps.googleusercontent.com",
+                                                                   redirectUri: "com.googleusercontent.apps.284882057281-fgsdehdsd6ivlduhsmllvlc1973nkuj3:/oauth2redirect/google"),
+            saltingService: DefaultSaltingService())
+        
+        unauthModel.zkLogin(zkLoginRequest: req)
+    }
+    
+    
+    func loginApple() {
+        let req = ZKLoginRequest(openIDServiceConfiguration: OpenIDServiceConfiguration(provider: Apple(), clientId: "284882057281-fgsdehdsd6ivlduhsmllvlc1973nkuj3.apps.googleusercontent.com",
+                                                                                        redirectUri: "com.googleusercontent.apps.284882057281-fgsdehdsd6ivlduhsmllvlc1973nkuj3:/oauth2redirect/google"))
+        unauthModel.zkLogin(zkLoginRequest: req)
+    }
+    
 }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = UnauthenticatedViewModel(onLoggedIn: {response in})
-        LoginView(model: model)
+      let model = ZKLoginModel()
+        LoginView(viewModel: LoginViewModel(model: model))
     }
 }

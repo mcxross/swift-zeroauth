@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,10 +14,10 @@
 		7C2230BE2B9944E000CEAB7A /* ZeroAuth_iOS_DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230BD2B9944E000CEAB7A /* ZeroAuth_iOS_DemoTests.swift */; };
 		7C2230C82B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230C72B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITests.swift */; };
 		7C2230CA2B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230C92B9944E000CEAB7A /* ZeroAuth_iOS_DemoUITestsLaunchTests.swift */; };
-		7C2230D82B99464E00CEAB7A /* ZeroAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7C2230D72B99464E00CEAB7A /* ZeroAuth */; };
-		7C2230DA2B99464E00CEAB7A /* ZeroAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7C2230D92B99464E00CEAB7A /* ZeroAuthCore */; };
 		7C2230DC2B994CB100CEAB7A /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230DB2B994CB100CEAB7A /* WalletView.swift */; };
 		7C2230DE2B994DAA00CEAB7A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230DD2B994DAA00CEAB7A /* LoginView.swift */; };
+		7CA7853E2B9B34BF00B8FD3B /* ZeroAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA7853D2B9B34BF00B8FD3B /* ZeroAuth */; };
+		7CA785402B9B34BF00B8FD3B /* ZeroAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA7853F2B9B34BF00B8FD3B /* ZeroAuthCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,8 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C2230D82B99464E00CEAB7A /* ZeroAuth in Frameworks */,
-				7C2230DA2B99464E00CEAB7A /* ZeroAuthCore in Frameworks */,
+				7CA7853E2B9B34BF00B8FD3B /* ZeroAuth in Frameworks */,
+				7CA785402B9B34BF00B8FD3B /* ZeroAuthCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +86,7 @@
 				7C2230BC2B9944E000CEAB7A /* ZeroAuth iOS DemoTests */,
 				7C2230C62B9944E000CEAB7A /* ZeroAuth iOS DemoUITests */,
 				7C2230AA2B9944DF00CEAB7A /* Products */,
+				7CDFC4882B9A5C230021B754 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +138,13 @@
 			path = "ZeroAuth iOS DemoUITests";
 			sourceTree = "<group>";
 		};
+		7CDFC4882B9A5C230021B754 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -154,8 +162,8 @@
 			);
 			name = "ZeroAuth iOS Demo";
 			packageProductDependencies = (
-				7C2230D72B99464E00CEAB7A /* ZeroAuth */,
-				7C2230D92B99464E00CEAB7A /* ZeroAuthCore */,
+				7CA7853D2B9B34BF00B8FD3B /* ZeroAuth */,
+				7CA7853F2B9B34BF00B8FD3B /* ZeroAuthCore */,
 			);
 			productName = "ZeroAuth iOS Demo";
 			productReference = 7C2230A92B9944DF00CEAB7A /* ZeroAuth iOS Demo.app */;
@@ -175,6 +183,8 @@
 				7C2230BB2B9944E000CEAB7A /* PBXTargetDependency */,
 			);
 			name = "ZeroAuth iOS DemoTests";
+			packageProductDependencies = (
+			);
 			productName = "ZeroAuth iOS DemoTests";
 			productReference = 7C2230B92B9944E000CEAB7A /* ZeroAuth iOS DemoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -230,7 +240,7 @@
 			);
 			mainGroup = 7C2230A02B9944DF00CEAB7A;
 			packageReferences = (
-				7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */,
+				7CA7853C2B9B347200B8FD3B /* XCLocalSwiftPackageReference "../.." */,
 			);
 			productRefGroup = 7C2230AA2B9944DF00CEAB7A /* Products */;
 			projectDirPath = "";
@@ -608,26 +618,20 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mcxross/swift-zeroauth.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		7CA7853C2B9B347200B8FD3B /* XCLocalSwiftPackageReference "../.." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../..;
 		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7C2230D72B99464E00CEAB7A /* ZeroAuth */ = {
+		7CA7853D2B9B34BF00B8FD3B /* ZeroAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */;
 			productName = ZeroAuth;
 		};
-		7C2230D92B99464E00CEAB7A /* ZeroAuthCore */ = {
+		7CA7853F2B9B34BF00B8FD3B /* ZeroAuthCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7C2230D62B99464E00CEAB7A /* XCRemoteSwiftPackageReference "swift-zeroauth" */;
 			productName = ZeroAuthCore;
 		};
 /* End XCSwiftPackageProductDependency section */

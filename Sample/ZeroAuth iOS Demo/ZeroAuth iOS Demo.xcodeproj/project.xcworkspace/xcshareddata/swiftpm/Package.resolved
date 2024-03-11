@@ -23,17 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mcxross/swift-suiness.git",
       "state" : {
-        "revision" : "cf793bc95b14f3ef1cb27932a3e38ad37b909036",
-        "version" : "0.1.2-beta"
-      }
-    },
-    {
-      "identity" : "swift-zeroauth",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mcxross/swift-zeroauth.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "80c89d757a6c9f9ef18601ac353780efc0516765"
+        "revision" : "9d4fff6009e465f9c09605ecc84832442edd1531",
+        "version" : "0.1.3-beta"
       }
     }
   ],
