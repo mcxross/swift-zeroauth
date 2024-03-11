@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,8 @@
 		7C2230DE2B994DAA00CEAB7A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2230DD2B994DAA00CEAB7A /* LoginView.swift */; };
 		7CA7853E2B9B34BF00B8FD3B /* ZeroAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA7853D2B9B34BF00B8FD3B /* ZeroAuth */; };
 		7CA785402B9B34BF00B8FD3B /* ZeroAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA7853F2B9B34BF00B8FD3B /* ZeroAuthCore */; };
+		7CB205882B9F4D3600B6BD36 /* ZeroAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB205872B9F4D3600B6BD36 /* ZeroAuth */; };
+		7CB2058A2B9F4D3600B6BD36 /* ZeroAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB205892B9F4D3600B6BD36 /* ZeroAuthCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +60,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CA7853E2B9B34BF00B8FD3B /* ZeroAuth in Frameworks */,
+				7CB205882B9F4D3600B6BD36 /* ZeroAuth in Frameworks */,
 				7CA785402B9B34BF00B8FD3B /* ZeroAuthCore in Frameworks */,
+				7CB2058A2B9F4D3600B6BD36 /* ZeroAuthCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +168,8 @@
 			packageProductDependencies = (
 				7CA7853D2B9B34BF00B8FD3B /* ZeroAuth */,
 				7CA7853F2B9B34BF00B8FD3B /* ZeroAuthCore */,
+				7CB205872B9F4D3600B6BD36 /* ZeroAuth */,
+				7CB205892B9F4D3600B6BD36 /* ZeroAuthCore */,
 			);
 			productName = "ZeroAuth iOS Demo";
 			productReference = 7C2230A92B9944DF00CEAB7A /* ZeroAuth iOS Demo.app */;
@@ -240,7 +246,7 @@
 			);
 			mainGroup = 7C2230A02B9944DF00CEAB7A;
 			packageReferences = (
-				7CA7853C2B9B347200B8FD3B /* XCLocalSwiftPackageReference "../.." */,
+				7CB205862B9F4D3600B6BD36 /* XCRemoteSwiftPackageReference "swift-zeroauth" */,
 			);
 			productRefGroup = 7C2230AA2B9944DF00CEAB7A /* Products */;
 			projectDirPath = "";
@@ -618,12 +624,16 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		7CA7853C2B9B347200B8FD3B /* XCLocalSwiftPackageReference "../.." */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../..;
+/* Begin XCRemoteSwiftPackageReference section */
+		7CB205862B9F4D3600B6BD36 /* XCRemoteSwiftPackageReference "swift-zeroauth" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mcxross/swift-zeroauth.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		7CA7853D2B9B34BF00B8FD3B /* ZeroAuth */ = {
@@ -632,6 +642,16 @@
 		};
 		7CA7853F2B9B34BF00B8FD3B /* ZeroAuthCore */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = ZeroAuthCore;
+		};
+		7CB205872B9F4D3600B6BD36 /* ZeroAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CB205862B9F4D3600B6BD36 /* XCRemoteSwiftPackageReference "swift-zeroauth" */;
+			productName = ZeroAuth;
+		};
+		7CB205892B9F4D3600B6BD36 /* ZeroAuthCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CB205862B9F4D3600B6BD36 /* XCRemoteSwiftPackageReference "swift-zeroauth" */;
 			productName = ZeroAuthCore;
 		};
 /* End XCSwiftPackageProductDependency section */
