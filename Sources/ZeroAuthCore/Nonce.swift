@@ -1,29 +1,38 @@
 import Suiness
 
+public enum NonceError: Error {
+    case keypairGenerationFailed
+}
+
+
 public struct Nonce {
     public var endPoint: String
     public var kp: Keypair
     public var maxEpoch: UInt64
     public var randomness: String
     
-    public init(endPoint: String = "https://sui-testnet.mystenlabs.com", kp: Keypair = Keypair(), maxEpoch: UInt64 = 30, randomness: String = generateRandomness()) {
+    public init(endPoint: String = "https://sui-devnet.mystenlabs.com", kp: Keypair? = nil, maxEpoch: UInt64 = 30, randomness: String = generateRandomness()) throws {
         self.endPoint = endPoint
-        self.kp = kp
         self.maxEpoch = maxEpoch
         self.randomness = randomness
+        
+        if let providedKp = kp, !providedKp.pk.isEmpty, !providedKp.sk.isEmpty {
+                    self.kp = providedKp
+                } else {
+                    do {
+                        let generatedKeypair = try deriveNewKey()
+                        self.kp = Keypair(sk: generatedKeypair.sk, pk: generatedKeypair.address)
+                    } catch {
+                        throw NonceError.keypairGenerationFailed
+                    }
+      }
+        
     }
     
     // Computed property to generate a string representation of the Nonce
     public var value: String? {
         do {
-            let kpToUse: Keypair
-            if kp.pk.isEmpty || kp.sk.isEmpty {
-                let derivedKey = try deriveNewKey()
-                kpToUse = Keypair(sk: derivedKey.sk, pk: derivedKey.address)
-            } else {
-                kpToUse = kp
-            }
-            return try generateNonce(pk: kpToUse.pk, maxEpoch: self.maxEpoch, randomness: self.randomness)
+            return try generateNonce(sk: kp.sk, maxEpoch: self.maxEpoch, randomness: self.randomness)
         } catch {
             return nil
         }

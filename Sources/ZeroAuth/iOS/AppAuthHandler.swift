@@ -6,6 +6,7 @@ class AppAuthHandler {
     
     private var userAgentSession: OIDExternalUserAgentSession?
     private var loginResponseHandler: LoginResponseHandler?
+    private var logoutResponseHandler: LogoutResponseHandler?
     
     init() {
         self.userAgentSession = nil
@@ -63,23 +64,25 @@ class AppAuthHandler {
     }
     
     func handleAuthorizationResponse() async throws -> OIDAuthorizationResponse? {
-        
         do {
+            guard let loginHandler = self.loginResponseHandler else {
+                throw NSError(domain: "AppAuthHandlerErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Login response handler is unexpectedly nil."])
+            }
             
-            let response = try await self.loginResponseHandler!.waitForCallback()
+            let response = try await loginHandler.waitForCallback()
             self.loginResponseHandler = nil
             return response
             
         } catch {
-            
             self.loginResponseHandler = nil
-            if (self.isUserCancellationErrorCode(ex: error)) {
+            if self.isUserCancellationErrorCode(ex: error) {
                 return nil
             }
             
             throw self.createAuthorizationError(title: "Authorization Request Error", ex: error)
         }
     }
+
     
     /*
      * Handle the authorization response, including the user closing the Chrome Custom Tab
@@ -110,6 +113,80 @@ class AppAuthHandler {
                 }
         }
     }
+    
+   
+    func performEndSessionRedirect(zkLoginResponse: ZKLoginResponse,
+                                   viewController: UIViewController) throws {
+        guard let issuer = URL(string: zkLoginResponse.oidc.provider.issuer) else {
+            Logger.error(data: "Invalid inssuer URI")
+            return
+        }
+        
+        guard let authorizationEndpoint = URL(string: zkLoginResponse.oidc.provider.authorizationEndpoint) else {
+            Logger.error(data: "Invalid authorizationEndpoint URI")
+            return
+        }
+        
+        guard let tokenEndpoint = URL(string: zkLoginResponse.oidc.provider.tokenEndpoint) else {
+            Logger.error(data: "Invalid tokenEndpoint URI")
+            return
+        }
+        
+        guard let regEndpoint = URL(string: zkLoginResponse.oidc.provider.registrationEndpoint ?? "") else {
+            Logger.error(data: "Invalid registrationEndPoint URI")
+            return
+        }
+        
+        guard let endSessionEndPoint = URL(string: zkLoginResponse.oidc.provider.revocationEndpoint ?? "") else {
+            Logger.error(data: "Invalide revovationEndpoint")
+            return
+        }
+        
+            
+        let metadata: OIDServiceConfiguration = OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint, tokenEndpoint: tokenEndpoint, issuer: issuer, registrationEndpoint: regEndpoint, endSessionEndpoint: endSessionEndPoint)
+            
+        let extraParams = [String: String]()
+            
+        guard let postLogoutRedirectURL = URL(string: "mcxross:/logoutcallback") else {
+                Logger.error(data: "Invalid postLogoutRedirectURL URI")
+                return
+            }
+            
+            let request = OIDEndSessionRequest(
+                configuration: metadata,
+                idTokenHint: zkLoginResponse.tokenInfo.idToken ?? "",
+                postLogoutRedirectURL: postLogoutRedirectURL,
+                additionalParameters: extraParams)
+        
+         print(request)
+            
+            let userAgent = OIDExternalUserAgentIOS(presenting: viewController)
+            self.logoutResponseHandler = LogoutResponseHandler()
+            self.userAgentSession = OIDAuthorizationService.present(
+                request,
+                externalUserAgent: userAgent!,
+                callback: self.logoutResponseHandler!.callback)
+        }
+    
+        func handleEndSessionResponse() async throws -> OIDEndSessionResponse? {
+            
+            do {
+                
+                let response = try await self.logoutResponseHandler!.waitForCallback()
+                self.logoutResponseHandler = nil
+                return response
+
+            } catch {
+                
+                self.logoutResponseHandler = nil
+                if (self.isUserCancellationErrorCode(ex: error)) {
+                    return nil
+                }
+                
+                throw self.createAuthorizationError(title: "Logout Request Error", ex: error)
+            }
+        }
+    
     
     /*
      * We can check for specific error codes to handle the user cancelling the ASWebAuthenticationSession window

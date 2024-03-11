@@ -29,9 +29,9 @@ public class UnauthenticatedViewModel: ObservableObject {
                     
                     let epochId = try await SuiClient(endPoint: zkLoginRequest.openIDServiceConfiguration.nonce.endPoint).getSuiCurrentEpoch()
                     
-                    let userNonce = zkLoginRequest.openIDServiceConfiguration.nonce
+                    let providedNonce = zkLoginRequest.openIDServiceConfiguration.nonce
                     
-                    let updatedNonce = Nonce(endPoint: userNonce.endPoint, kp: userNonce.kp,  maxEpoch: UInt64(epochId) + userNonce.maxEpoch, randomness: userNonce.randomness)
+                    let updatedNonce = try Nonce(endPoint: providedNonce.endPoint, kp: providedNonce.kp,  maxEpoch: UInt64(epochId) + providedNonce.maxEpoch, randomness: providedNonce.randomness)
                     
                     let userOIDSC = zkLoginRequest.openIDServiceConfiguration
                     
@@ -48,25 +48,19 @@ public class UnauthenticatedViewModel: ObservableObject {
                             viewController: self.getViewController()
                         )
                     }
-                    
                     // Wait for the response
                     let authorizationResponse = try await self.appauth.handleAuthorizationResponse()
                     if authorizationResponse != nil {
-                        
                         // Redeem the code for tokens
                         let tokenResponse = try await self.appauth.redeemCodeForTokens(
                             clientID: updatedZKLoginRequest.openIDServiceConfiguration.clientId,
                             authResponse: authorizationResponse!)
                         
-                        print(tokenResponse)
+                        let salt = try await updatedZKLoginRequest.saltingService.fetchSalt(jwt: tokenResponse.idToken ?? "")
                         
-                        let salt = try await updatedZKLoginRequest.saltingService.fetchSalt(jwt: authorizationResponse?.accessToken ?? "")
-                        
-                        print(salt)
-                        
-                        let proofResponse = try await updatedZKLoginRequest.provingService.fetchProof(jwtToken: authorizationResponse?.accessToken ?? "", extendedEphemeralPublicKey: getExtendedEphemeralPublicKey(sk: updatedNonce.kp.pk), maxEpoch: Int64(updatedNonce.maxEpoch), randomness: updatedNonce.randomness, salt: salt)
-                        
-                        print(proofResponse)
+                        let extendedEphemeralPublicKey  = try getExtendedEphemeralPublicKey(sk: updatedNonce.kp.sk)
+
+                        let proofResponse = try await updatedZKLoginRequest.provingService.fetchProof(jwtToken: tokenResponse.idToken ?? "", extendedEphemeralPublicKey: extendedEphemeralPublicKey, maxEpoch: Int64(updatedNonce.maxEpoch), randomness: updatedNonce.randomness, salt: salt)
                         
                         await MainActor.run {
                             
@@ -75,9 +69,11 @@ public class UnauthenticatedViewModel: ObservableObject {
                            let tokenInfo = TokenInfo(accessToken: authorizationResponse?.accessToken, expiresIn: 5, refreshToken: tokenResponse.refreshToken, scope: authorizationResponse?.scope, tokenType: authorizationResponse?.tokenType, idToken: tokenResponse.idToken,
                                                                                 nonce: additionalParams?["nonce"] as? String)
                             
-                            let response = ZKLoginResponse(address: generateAddress(zkLoginRequest: updatedZKLoginRequest, tokenInfo: tokenInfo), kp: updatedZKLoginRequest.openIDServiceConfiguration.nonce.kp, tokenInfo: tokenInfo,
-                                                           salt: salt,
-                            proof: proofResponse)
+                            let response = ZKLoginResponse(
+                                oidc: updatedZKLoginRequest.openIDServiceConfiguration,
+                                address: generateAddress(zkLoginRequest: updatedZKLoginRequest, tokenInfo: tokenInfo), kp: updatedZKLoginRequest.openIDServiceConfiguration.nonce.kp, tokenInfo: tokenInfo,
+                                salt: salt,
+                                proof: proofResponse)
                             
                             self.onLoggedIn(response)
                         }

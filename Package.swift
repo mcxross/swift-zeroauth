@@ -19,8 +19,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "1.6.2")),
-        .package(url: "https://github.com/mcxross/swift-suiness.git", .upToNextMajor(from: "0.1.1-beta")),
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.8.1"))
+        .package(url: "https://github.com/mcxross/swift-suiness.git", .upToNextMajor(from: "0.1.2-beta")),
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.8.1")),
+        .package(url: "https://github.com/Kitura/Swift-JWT.git", .upToNextMajor(from: "4.0.0"))
     ],
     targets: [
         .target(

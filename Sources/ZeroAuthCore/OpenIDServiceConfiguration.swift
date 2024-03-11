@@ -7,10 +7,22 @@ public struct OpenIDServiceConfiguration {
     public init(provider: Provider,
                 clientId: String,
                 redirectUri: String,
-                nonce: Nonce = Nonce()) {
+                nonce: Nonce? = nil) {
         self.provider = provider
         self.clientId = clientId
         self.redirectUri = redirectUri
-        self.nonce = nonce
+        if let givenNonce = nonce {
+             self.nonce = givenNonce
+         } else {
+                    do {
+                        // Try to generate a new Nonce
+                        self.nonce = try Nonce()
+                    } catch {
+                        // Handle the error or provide a fallback mechanism
+                        fatalError("Failed to generate Nonce: \(error)")
+                        // Alternatively, you could also initialize `nonce` with some default state that represents a failed generation.
+                        // But, using `fatalError` here to highlight the failure explicitly.
+                    }
+                }
     }
 }

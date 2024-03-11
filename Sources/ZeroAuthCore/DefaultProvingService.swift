@@ -15,8 +15,9 @@ public struct DefaultProvingService : ProvingServiceProtocol {
     public init(prover: String) {
         self.prover = prover
     }
-    
+
     public func fetchProof(jwtToken: String, extendedEphemeralPublicKey: String, maxEpoch: Int64, randomness: String, salt: String) async throws -> Proof {
+        
         return try await withCheckedThrowingContinuation { continuation in
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json"
@@ -42,7 +43,6 @@ public struct DefaultProvingService : ProvingServiceProtocol {
                 case .success(let data):
                     do {
                         let decoder = JSONDecoder()
-                        print(data)
                         let proofResponse = try decoder.decode(Proof.self, from: data)
                         continuation.resume(returning: proofResponse)
                     } catch {
